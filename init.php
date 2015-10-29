@@ -10,7 +10,7 @@ function __autoload($name) {
 		'./',
 	];
 	foreach ($folders as $folder) {
-		$realFilePath = realpath('../classes/' . $folder . $name . '.php');
+		$realFilePath = realpath(__DIR__ . '/classes/' . $folder . $name . '.php');
 		if (file_exists($realFilePath)) {
 			require_once $realFilePath;
 			return;
