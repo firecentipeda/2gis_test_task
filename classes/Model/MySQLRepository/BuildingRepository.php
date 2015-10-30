@@ -3,7 +3,7 @@
 class BuildingRepository extends BaseRepository {
 	public function getAll($offset, $limit) {
 		$query = "SELECT *, X(`location`) longitude , Y(`location`) latitude FROM building limit $offset, $limit";
-		return $this->getModelData($this->query($query));
+		return $this->getModelData($this->fetchAll($query));
 	}
 	
 	protected function getModelData($queryResult) {

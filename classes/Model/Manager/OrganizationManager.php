@@ -25,14 +25,28 @@ class OrganizationManager extends BaseManager {
 	}
 	
 	public function getByBuilding($id) {
-		return $this->repository->getByBuildingId($id);
+		$organizations = [];
+		$this->repository->setOffset($this->offset);
+		$this->repository->setLimit($this->limit);
+		foreach ($this->repository->getByBuildingId($id) as $one) {
+			$organizations[] = $this->createFromArray($one);
+		}
+		return $organizations;
 	}
 	
 	public function getByRubric($id) {
-		return $this->repository->getByRubricId($id);
+		$organizations = [];
+		$this->repository->setOffset($this->offset);
+		$this->repository->setLimit($this->limit);
+		foreach ($this->repository->getByRubricId($id) as $one) {
+			$organizations[] = $this->createFromArray($one);
+		}
+		return $organizations;
 	}
 	
 	public function getInSquare($coordinates, $distance) {
+		$this->repository->setOffset($this->offset);
+		$this->repository->setLimit($this->limit);
 		return $this->repository->getInSquare($coordinates, $distance);
 	}
 }

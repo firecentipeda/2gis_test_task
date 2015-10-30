@@ -1,6 +1,7 @@
 <?php
 
 class RubricManager extends BaseManager {
+
 	static protected function createRepository() {
 		return new RubricRepository();
 	}

@@ -9,6 +9,4 @@ class BuildingManager extends BaseManager {
 	public function getAll($offset, $limit) {
 		return $this->repository->getAll($offset, $limit);
 	}
-	
-	
 }

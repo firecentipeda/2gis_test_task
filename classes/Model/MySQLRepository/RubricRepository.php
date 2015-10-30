@@ -2,7 +2,7 @@
 class RubricRepository extends BaseRepository {
 	public function getAll() {
 		$query = 'SELECT * FROM rubric';
-		return $this->getModelData($this->query($query));
+		return $this->getModelData($this->fetchAll($query));
 	}
 	
 	protected function getModelData($queryResult) {
