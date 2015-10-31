@@ -7,6 +7,10 @@ abstract class BaseWS {
 	public function __construct() {
 		$this->modelManager = static::createModelManager();
 	}
+	
+	/**
+	 * @return BaseManager
+	 */
 	abstract static protected function createModelManager();
 	
 	protected function getListSize($limit) {

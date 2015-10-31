@@ -12,6 +12,10 @@ class OrganizationManager extends BaseManager {
 		return new OrganizationRepository();
 	}
 	
+	/**
+	 * @param array $modelData
+	 * @return array
+	 */
 	public function createFromArray($modelData) {
 		foreach ($modelData['rubricsIds'] as $rubricId) {
 			$modelData['rubrics'][] = $this->rubricManager->getRubricTree($rubricId);
@@ -20,10 +24,19 @@ class OrganizationManager extends BaseManager {
 		return $modelData;
 	}
 	
+	/**
+	 * 
+	 * @param int $id
+	 * @return array
+	 */
 	public function getById($id) {
 		return $this->createFromArray(reset($this->repository->getById($id)));
 	}
 	
+	/**
+	 * @param int $id
+	 * @return array
+	 */
 	public function getByBuilding($id) {
 		$organizations = [];
 		$this->repository->setOffset($this->offset);
@@ -34,6 +47,10 @@ class OrganizationManager extends BaseManager {
 		return $organizations;
 	}
 	
+	/**
+	 * @param int $id
+	 * @return array
+	 */
 	public function getByRubric($id) {
 		$organizations = [];
 		$this->repository->setOffset($this->offset);
@@ -44,6 +61,11 @@ class OrganizationManager extends BaseManager {
 		return $organizations;
 	}
 	
+	/**
+	 * @param array $coordinates
+	 * @param int $distance
+	 * @return array
+	 */
 	public function getInSquare($coordinates, $distance) {
 		$this->repository->setOffset($this->offset);
 		$this->repository->setLimit($this->limit);

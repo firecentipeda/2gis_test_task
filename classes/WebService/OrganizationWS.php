@@ -1,6 +1,9 @@
 <?php
 
 class OrganizationWS extends BaseWS {
+	/**
+	 * @return \OrganizationManager
+	 */
 	static protected function createModelManager() {
 		return new OrganizationManager();
 	}

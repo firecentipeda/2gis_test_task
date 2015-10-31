@@ -1,6 +1,9 @@
 <?php
 
 class BaseRepository {
+	/**
+	 * @var PDO 
+	 */
 	private $db;
 	
 	protected $offset = 0;
@@ -19,6 +22,13 @@ class BaseRepository {
 		    throw new DBException('DB error: ' . $e->getMessage());
 		}
 	}
+	
+	/**
+	 * 
+	 * @param string $query
+	 * @return PDOStatement
+	 * @throws DBException
+	 */
 	protected function query($query) {
 		$stm = $this->db->query($query);
 		if (!$stm) {
@@ -27,6 +37,11 @@ class BaseRepository {
 		return $stm;
 	}
 	
+	/**
+	 * 
+	 * @param string $query
+	 * @return array
+	 */
 	public function fetchAll($query) {
 		return $this->query($query)->fetchAll(PDO::FETCH_ASSOC);
 	}
