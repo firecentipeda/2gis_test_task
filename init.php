@@ -18,7 +18,7 @@ function __autoload($name) {
 	}
 }
 
-require_once '../config.php';
+require_once __DIR__ . '/config.php';
 
 $settings = Settings::getInstance();
 foreach ($config as $paramName => $paramValue) {
