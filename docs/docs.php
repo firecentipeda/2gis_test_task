@@ -100,4 +100,12 @@
  *			float longitude
  * )
  * 
+ * Примеры запросов
+ * http://firecentipeda.koding.io/index.php?service=organization&method=getbyid&id=198
+ * http://firecentipeda.koding.io/index.php?service=organization&method=getbybuilding&id=154
+ * http://firecentipeda.koding.io/index.php?service=organization&method=getbyrubric&id=5
+ * http://firecentipeda.koding.io/index.php?service=organization&method=getbyrubric&id=5&limit=1000&offset=500
+ * http://firecentipeda.koding.io/index.php?service=organization&method=getinsquare&lat=56&long=37&distance=100000
+ * http://firecentipeda.koding.io/index.php?service=building&method=getList
+
  */
