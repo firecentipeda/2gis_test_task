@@ -61,7 +61,7 @@ class OrganizationRepository extends BaseRepository {
 		if (empty($buildingsIds)) {
 			return [];
 		}
-		$firmIds = $this->getIdsByBuildingsIds($id);
+		$firmIds = $this->getIdsByBuildingsIds($buildingsIds);
 		if (empty($firmIds)) {
 			return [];
 		}
