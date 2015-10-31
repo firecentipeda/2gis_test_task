@@ -1,16 +1,19 @@
 <?php
 
 class BuildingWS extends BaseWS {
-	private $maxListSize = 1000;
-	private $buildingManager;
-	
-	public function __construct() {
-		$this->buildingManager = new BuildingManager();
+	/**
+	 * @return \BuildingManager
+	 */
+	static protected function createModelManager() {
+		return new BuildingManager();
 	}
 	
+	/**
+	 * @param Request $request
+	 * @return array
+	 */
 	public function getList($request) {
-		$limit = $request->getParameter('limit', $this->maxListSize) <= $this->maxListSize ? 
-			$request->getParameter('limit', $this->maxListSize) : $this->maxListSize;
-		return $this->buildingManager->getAll($request->getParameter('offset', 0), $limit);
+		$limit = $this->getListSize($request->getParameter('limit', $this->maxListSize));
+		return $this->modelManager->getAll($request->getParameter('offset', 0), $limit);
 	}
 }

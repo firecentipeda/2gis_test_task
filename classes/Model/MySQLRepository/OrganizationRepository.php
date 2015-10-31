@@ -7,7 +7,7 @@ class OrganizationRepository extends BaseRepository {
 			. "INNER JOIN building ON building.id=firm.building "
 			. "INNER JOIN firm_rubrics ON firm.id = firm_rubrics.firm_id "
 			. "WHERE firm.id = $id";
-		return $this->getModelData($this->query($query));
+		return $this->getModelData($this->fetchAll($query));
 	}
 	
 	private function getSelectQueryPart() {
@@ -20,16 +20,32 @@ class OrganizationRepository extends BaseRepository {
 			. "INNER JOIN building ON building.id=firm.building "
 			. "INNER JOIN firm_rubrics ON firm.id = firm_rubrics.firm_id "
 			. "WHERE firm.building = $id";
-		return $this->getModelData($this->query($query));
+		return $this->getModelData($this->fetchAll($query));
 	}
 	
 	public function getByRubricId($id) {
+		$firmIds = $this->getIdsByRubricId($id);
+		if (empty($firmIds)) {
+			return [];
+		}
 		$query = $this->getSelectQueryPart()
 			. "LEFT JOIN firm_phones phones on firm.id=phones.firm_id "
 			. "INNER JOIN building ON building.id=firm.building "
 			. "INNER JOIN firm_rubrics ON firm.id = firm_rubrics.firm_id "
-			. "WHERE firm_rubrics.rubric_id = $id";
-		return $this->getModelData($this->query($query));
+			. "WHERE firm.id IN(" . implode(',', $firmIds) . ")";
+		return $this->getModelData($this->fetchAll($query));
+	}
+	
+	private function getIdsByRubricId($rubricId) {
+		$query = "select firm.id from firm "
+			. "INNER JOIN firm_rubrics fr ON firm.id=fr.firm_id "
+			. "WHERE fr.rubric_id=$rubricId "
+			. "LIMIT $this->offset, $this->limit";
+		$ids = [];
+		foreach ($this->fetchAll($query) as $row) {
+			$ids[] = $row['id'];
+		}
+		return $ids;
 	}
 	
 	public function getInSquare($coordinates, $distance) {
@@ -39,19 +55,33 @@ class OrganizationRepository extends BaseRepository {
 			FROM building having sdistance < $distance 
 			ORDER BY sdistance";
 		$buildingsIds = [];
-		foreach ($this->query($query) as $row) {
+		foreach ($this->fetchAll($query) as $row) {
 			$buildingsIds[] = $row['id'];
 		}
 		if (empty($buildingsIds)) {
+			return [];
+		}
+		$firmIds = $this->getIdsByBuildingsIds($buildingsIds);
+		if (empty($firmIds)) {
 			return [];
 		}
 		$query = $this->getSelectQueryPart()
 			. "LEFT JOIN firm_phones phones on firm.id=phones.firm_id "
 			. "INNER JOIN building ON building.id=firm.building "
 			. "INNER JOIN firm_rubrics ON firm.id = firm_rubrics.firm_id "
-			. "WHERE building.id IN (" . implode(',', $buildingsIds) . ')';
-		var_dump($query);
-		return $this->getModelData($this->query($query));
+			. "WHERE firm.id IN(" . implode(',', $firmIds) . ")";
+		return $this->getModelData($this->fetchAll($query));
+	}
+		
+	private function getIdsByBuildingsIds($buildingsIds) {
+		$query = "select firm.id from firm "
+			. "WHERE building IN (" . implode(',', $buildingsIds) . ')'
+			. "LIMIT $this->offset, $this->limit";
+		$ids = [];
+		foreach ($this->fetchAll($query) as $row) {
+			$ids[] = $row['id'];
+		}
+		return $ids;
 	}
 	
 	protected function getModelData($queryResult) {

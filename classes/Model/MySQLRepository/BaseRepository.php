@@ -1,7 +1,13 @@
 <?php
 
 class BaseRepository {
+	/**
+	 * @var PDO 
+	 */
 	private $db;
+	
+	protected $offset = 0;
+	protected $limit = 1000;
 
 	public function __construct() {
 		$dbSettings = Settings::getInstance();
@@ -16,15 +22,39 @@ class BaseRepository {
 		    throw new DBException('DB error: ' . $e->getMessage());
 		}
 	}
+	
+	/**
+	 * 
+	 * @param string $query
+	 * @return PDOStatement
+	 * @throws DBException
+	 */
 	protected function query($query) {
 		$stm = $this->db->query($query);
 		if (!$stm) {
 			throw new DBException('DB error: ' . $this->getError()['message']);
 		};
-		return $stm->fetchAll(PDO::FETCH_ASSOC);
+		return $stm;
 	}
-
+	
+	/**
+	 * 
+	 * @param string $query
+	 * @return array
+	 */
+	public function fetchAll($query) {
+		return $this->query($query)->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
 	public function GetError() {
 		return ['code' => $this->db->errorInfo()[0], 'message' => $this->db->errorInfo()[2]];
+	}
+	
+	public function setLimit($limit) {
+		$this->limit = $limit;
+	}
+	
+	public function setOffset($offset) {
+		$this->offset = $offset;
 	}
 }

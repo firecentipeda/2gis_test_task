@@ -18,8 +18,9 @@ function __autoload($name) {
 	}
 }
 
+require_once '../config.php';
+
 $settings = Settings::getInstance();
-$settings->set('dbHost','raf.local');
-$settings->set('dbName','zaytsevaav_test_base');
-$settings->set('dbUser','zaytsevaav');
-$settings->set('dbPassword','2UX:%cvX');
+foreach ($config as $paramName => $paramValue) {
+	$settings->set($paramName, $paramValue);
+}

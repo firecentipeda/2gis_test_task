@@ -1,10 +1,16 @@
 <?php
 
 class RubricManager extends BaseManager {
+
 	static protected function createRepository() {
 		return new RubricRepository();
 	}
 	
+	/**
+	 * 
+	 * @param int $rubricId
+	 * @return array
+	 */
 	public function getRubricTree($rubricId) {
 		$rubrics = $this->getAll();
 		$rubricTree = [];
@@ -15,6 +21,9 @@ class RubricManager extends BaseManager {
 		return $rubricTree;
 	}
 	
+	/**
+	 * @return array
+	 */
 	public function getAll() {
 		return $this->repository->getAll();
 	}
